@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, Navigate, json, useNavigate } from "react-router-dom";
 import { server } from "..";
-
+import { toast,ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,7 +24,16 @@ const Signup = () => {
       .then((res) => {
         console.log(res);
         alert(res?.data);
-
+        toast.success("SignUp Successfully, Please Login", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: false,
+          progress: false,
+          theme: "light",
+        });
         setRedirect(true);
       })
       .catch((e) => {
@@ -129,6 +139,7 @@ const Signup = () => {
         </div> */}
         </div>
       </div>
+      <ToastContainer/>
     </>
   );
 };

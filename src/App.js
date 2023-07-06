@@ -8,6 +8,8 @@ import {Dataprovider} from './context/Dataprovider';
 import { useState } from 'react';
 import CreatePost from './pages/CreatePost';
 import ViewFull from './pages/ViewFull';
+import MyPost from './pages/MyPost';
+
 
 // const PrivateRoute = ({isUserAuthenticated}) =>{
 // return isUserAuthenticated ? (
@@ -37,6 +39,7 @@ const [isUserAuthenticated,setIsUserAuthenticated] = useState(false)
           <Route path='/home' element={<Main/>}/>
           <Route path='/home/:id' element={<ViewFull/>}/>
           <Route path='/create' element={<CreatePost/>}/>
+          <Route path='/post' element={<MyPost/>}/>
           {/* </Route> */}
          </Routes>
         </Dataprovider>

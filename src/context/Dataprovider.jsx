@@ -3,6 +3,7 @@ import { createContext } from "react";
 import extractToken from "../utils/GetToken";
 import React from 'react'
 import { useLocation, useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
 
 export const Datacontext = createContext(null)
@@ -10,7 +11,7 @@ export const Datacontext = createContext(null)
 
 const Dataprovider = ({children}) => {
 
-	const [account,setAccount] = useState({username:''})
+	const [account,setAccount] = useState({username:'', id:''})
 	const [token, setToken] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -30,6 +31,16 @@ const Dataprovider = ({children}) => {
 			navigate("/login")
 			// setIsLoading(false);
 		}
+	  }, []);
+
+	  useEffect(() => {
+		  if(extractToken()) {
+			const jwtd = jwtDecode(localStorage.getItem("token"));
+			console.log(jwtd);
+		if (jwtd) {
+		  setAccount({ username: jwtd?.username, id: jwtd?.id });
+		}
+		  }
 	  }, []);
 	
 
