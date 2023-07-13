@@ -21,6 +21,7 @@ const Dataprovider = ({children}) => {
 	
 	useEffect(() => {
 		// Check if token exists in local storage
+		
 		if (extractToken()) {
 		  setToken(extractToken());
 		  if(location.pathname === "/login"){

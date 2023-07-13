@@ -26,6 +26,7 @@ const PostCard = ({
     <>
       <div className="hidden md:block">
         <div className="mx-auto md:h-[40vh] h-fit md:w-[45vw] w-[90vw]  bg-white rounded overflow-hidden shadow-lg md:flex ">
+      
           <div className="flex items-center pl-3 w-1/3">
             <img
               className=" h-[32vh] object-cover rounded-md hidden md:block    "
@@ -45,6 +46,8 @@ const PostCard = ({
             />
             <div className="">
               <div className="flex justify-center w-full gap-x-3   ">
+
+          
                 <div className="inline-block bg-gray-200 rounded-lg gap-x-2 px-3 py-1  font-light text-gray-700 ">
                   Posted by {author?.username}
                 </div>

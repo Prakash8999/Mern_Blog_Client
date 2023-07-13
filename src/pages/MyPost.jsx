@@ -116,12 +116,12 @@ const MyPost = () => {
                     id={value?._id}
                     author={value?.userId}
                     onClick={
-                      <button
+                      <button className="px-3 py-2 bg-gray-200 hover:bg-red-500 flex items-center gap-x-2 hover:text-white duration-200 rounded-md text-sm "
                         onClick={() => {
                           deletePost(value?._id);
                         }}
                       >
-                        <AiTwotoneDelete />
+ Delete Post
                       </button>
                     }
                   />

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { IoReaderSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 const MyBlogCard = ({
@@ -11,6 +12,12 @@ const MyBlogCard = ({
   id,
   onClick,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <>
       <div className="hidden md:block">
@@ -22,29 +29,63 @@ const MyBlogCard = ({
               alt="Blog post"
             />
           </div>
+
           <div className="w-2/3 px-3 pt-5 flex flex-col gap-y-4">
-            <p className="font-bold text-base  mx-auto  flex text-center">
-              "{title}"
-            </p>
+            <div className="flex">
+              <p className="font-bold text-base  mx-auto  flex text-center">
+                "{title}"
+              </p>
+
+              <div className="relative ">
+                <button
+                  className="flex items-center justify-center   rounded-full  focus:outline-none"
+                  onClick={toggleMenu}
+                >
+                  <svg
+                    className={`w-6 h-6 text-gray-600 ${
+                      isOpen ? "" : ""
+                    }`}
+                    viewBox="0 0 24 24"
+                  >
+                    <circle cx="12" cy="6.5" r="1.5" />
+                    <circle cx="12" cy="12" r="1.5" />
+                    <circle cx="12" cy="17.5" r="1.5" />
+                  </svg>
+                </button>
+
+                <div
+                  className={`absolute z-10 ${
+                    isOpen ? "block" : "hidden"
+                  }  origin-top-left right-0 w-24 bg-gray-200 hover:bg-red-500 rounded-md   ring-1 ring-black ring-opacity-5 transition ease-out duration-200 transform`}
+                >
+                  <div
+                    className=""
+                    role="menu"
+                    aria-orientation="vertical"
+                    aria-labelledby="options-menu"
+                  >
+                <div className=" ">{onClick}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div
               dangerouslySetInnerHTML={{
                 __html: content.substring(0, 200) + "...",
               }}
             />
+
             <div className="">
               <div className="flex justify-center w-full gap-x-3   ">
-                
                 <Link
                   to={`/home/${id}`}
-                  className="inline-flex  px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className="flex items-center px-3 py-2  font-medium text-center text-white bg-blue-700 rounded-md hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-                  Read more
+                  Read More
                 </Link>
 
-				<div  className="inline-block bg-gray-200 rounded-lg gap-x-2 px-3 py-1  font-light text-gray-700 ">
-				{onClick}
-                </div>
+                
               </div>
             </div>
           </div>
