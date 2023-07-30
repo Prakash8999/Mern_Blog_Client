@@ -43,10 +43,6 @@ const Login = ({ setIsUserAuthenticated }) => {
         const jwtd = jwtDecode(res?.data?.token);
         setDecodedJwt(jwtd);
 
-        // alert(`Hello ${jwtd?.username}`);
-        // alert(res.data.message);
-
-        // console.log("Jwt" , jwtd);
         
         setIsUserAuthenticated(true);
         toast.success("Logged in Successfully", {
@@ -61,13 +57,22 @@ const Login = ({ setIsUserAuthenticated }) => {
         });
         setLoading(false)
         setRedirect(true);
-
       })
       .catch((e) => {
         // alert(e.data.message);
-        console.log(e);
-        alert(e.response.data.message);
-        setRedirect(false);
+        toast.error(e?.message, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: false,
+          progress: false,
+          theme: "light",
+        });
+        alert(e.message);
+        setLoading(false);
+        setRedirect(false)
       });
   };
   // console.log(typeof decodedJwt.id);

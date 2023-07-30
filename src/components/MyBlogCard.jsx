@@ -42,9 +42,7 @@ const MyBlogCard = ({
                   onClick={toggleMenu}
                 >
                   <svg
-                    className={`w-6 h-6 text-gray-600 ${
-                      isOpen ? "" : ""
-                    }`}
+                    className={`w-6 h-6 text-gray-600 ${isOpen ? "" : ""}`}
                     viewBox="0 0 24 24"
                   >
                     <circle cx="12" cy="6.5" r="1.5" />
@@ -64,7 +62,7 @@ const MyBlogCard = ({
                     aria-orientation="vertical"
                     aria-labelledby="options-menu"
                   >
-                <div className=" ">{onClick}</div>
+                    <div className=" ">{onClick}</div>
                   </div>
                 </div>
               </div>
@@ -84,8 +82,12 @@ const MyBlogCard = ({
                 >
                   Read More
                 </Link>
-
-                
+                <Link
+                  to={`/edit-post/${id}`}
+                  className="flex items-center px-3 py-2  font-medium text-center text-white bg-blue-700 rounded-md hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Edit Post
+                </Link>
               </div>
             </div>
           </div>
@@ -99,6 +101,36 @@ const MyBlogCard = ({
               "{title}"
             </p>
 
+            <div className="absolute right-4">
+                <button
+                  className="flex items-center justify-center   rounded-full  focus:outline-none"
+                  onClick={toggleMenu}
+                >
+                  <svg
+                    className={`w-6 h-6 text-gray-600 ${isOpen ? "" : ""}`}
+                    viewBox="0 0 24 24"
+                  >
+                    <circle cx="12" cy="6.5" r="1.5" />
+                    <circle cx="12" cy="12" r="1.5" />
+                    <circle cx="12" cy="17.5" r="1.5" />
+                  </svg>
+                </button>
+
+                <div
+                  className={`absolute z-10 ${
+                    isOpen ? "block" : "hidden"
+                  }  origin-top-left right-0 w-24 bg-gray-200 hover:bg-red-500 rounded-md   ring-1 ring-black ring-opacity-5 transition ease-out duration-200 transform`}
+                >
+                  <div
+                    className=""
+                    role="menu"
+                    aria-orientation="vertical"
+                    aria-labelledby="options-menu"
+                  >
+                    <div className=" ">{onClick}</div>
+                  </div>
+                </div>
+              </div>
             <Link
               to={`/home/${id}`}
               className="flex items-center  justify-center px-2"
@@ -117,16 +149,22 @@ const MyBlogCard = ({
               }}
             />
 
-            <div className="flex justify-between  items-center px-3  ">
-              <div className=" bg-gray-200 rounded-lg  px-3 py-2  font-medium text-gray-700 ">
-                Posted by {author?.username}
-              </div>
+            <div className="flex justify-center gap-x-14  items-center px-3  ">
+            
               <Link
                 to={`/home/${id}`}
                 className=" px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Read more
               </Link>
+              <Link
+                  to={`/edit-post/${id}`}
+                  className=" px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Edit Post
+                </Link>
+
+              
             </div>
           </div>
         </div>

@@ -7,28 +7,42 @@ import { format, formatISO9075 } from "date-fns";
 import PostCard from "../components/PostCard";
 import { IoAddOutline } from "react-icons/io5";
 import extractToken from "../utils/GetToken";
+import { ToastContainer, toast } from "react-toastify";
 
 const Main = () => {
   const [post, setPost] = useState("");
   const [refresh, setrefresh] = useState(false);
   const naviGate = useNavigate();
   useEffect(() => {
-    if (extractToken()) {
-      axios(`${server}/readpost`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${extractToken()}`,
-        },
-      })
-        .then((res) => {
-          setPost(res.data);
-
-          console.log(res.data);
+    try {
+      if (extractToken()) {
+        axios(`${server}/readpost`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${extractToken()}`,
+          },
         })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then((res) => {
+            setPost(res.data);
+            
+          })
+          .catch((err) => {
+            toast.error(err?.message, {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: false,
+              draggable: false,
+              progress: false,
+              theme: "light",
+            });
+          });
+      }  
+    } catch (error) {
+      console.log(error);
     }
+    
   }, []);
 
   const plus = () => {
@@ -80,6 +94,7 @@ const Main = () => {
             <IoAddOutline />
           </button>
         </div>
+        <ToastContainer/>
       </div>
     </>
   );

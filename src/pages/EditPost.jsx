@@ -1,18 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import { data } from "autoprefixer";
 import { server } from "..";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { UserAuth } from "../context/Dataprovider";
 import Input from "../components/Input";
-import extractToken from "../utils/GetToken";
+// import extractToken from "../utils/GetToken";
 import Spinner from "../components/Spinner";
+import extractToken from "../utils/GetToken";
 
 const modules = {
-  
   toolbar: [
     [{ header: [1, 2, false] }],
     ["bold", "italic", "underline", "strike", "blockquote"],
@@ -38,45 +38,94 @@ const formats = [
   "indent",
   "link",
 ];
-const CreatePost = () => {
+const EditPost = () => {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [files, setFiles] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState("");
   const { account, setAccount } = UserAuth();
-  const [loading, setLoading] = useState(false)
-
+  const [loading, setLoading] = useState(false);
+  const { id } = useParams();
   const navigate = useNavigate();
-  const handleCreatePost = (e) => {
+
+  useEffect(() => {
+    if (id && extractToken())
+      axios(`${server}/readpost/${id}`, {
+        method: "GET",
+      }).then((res) => {
+        // console.log(res.data);
+        setTitle(res?.data?.title);
+        setSummary(res?.data?.summary);
+        setImage(res?.data?.image);
+        setContent(res?.data?.content);
+      });
+  }, [id]);
+  //   const handleCreatePost = (e) => {
+  //     e.preventDefault();
+  //     setLoading(true)
+  //     const data = new FormData();
+  //     data.set("title", title);
+  //     data.set("summary", summary);
+  //     data.set("content", content);
+
+  //     console.log(account);
+  //     if (account && extractToken())   {
+  //       axios(`${server}/createpost`, {
+  //         method: "POST",
+  //         data: {
+  //           title,
+  //           summary,
+  //           content,
+  //           image,
+  //         },
+  //         headers:{
+  //           Authorization: `Bearer ${extractToken()}`
+  //         }
+  //       })
+  //         .then((res) => {
+  //           alert(res.data.message);
+  //           return navigate("/home");
+  //         })
+  //         .catch((e) => {
+  //           console.log(e);
+  //           alert("not done");
+  //         });
+  //     } else {
+  //       alert("something went wrong!");
+  //     }
+  //   };
+
+  const handleUpdatePost = (e) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
     const data = new FormData();
     data.set("title", title);
     data.set("summary", summary);
     data.set("content", content);
-
+    data.set("id", id);
     console.log(account);
-    if (account && extractToken())   {
+    if (account && extractToken()) {
       axios(`${server}/createpost`, {
-        method: "POST",
+        method: "PATCH",
         data: {
           title,
           summary,
           content,
           image,
+          id,
         },
-        headers:{
-          Authorization: `Bearer ${extractToken()}`
-        }
+        headers: {
+          Authorization: `Bearer ${extractToken()}`,
+        },
       })
         .then((res) => {
           alert(res.data.message);
           return navigate("/home");
         })
         .catch((e) => {
+alert(e?.message)
           
-          alert(e?.message);
         });
     } else {
       alert("something went wrong!");
@@ -84,19 +133,19 @@ const CreatePost = () => {
   };
   return (
     <>
-      <div className="bg-[#F8F8F8] pb-4">
+      <div className="bg-[#F8F8F8] pb-4 min-h-screen h-auto">
         <Navbar />
         <form
           action=""
-          onSubmit={handleCreatePost}
+          onSubmit={handleUpdatePost}
           className="flex flex-col items-center"
         >
-          <div className="md:p-4 p-2">
+          <div className="p-4">
             <Input
               type={"title"}
               placeholder={"Enter the title of blog"}
               value={title}
-              className={"md:w-[80vw] bg-white w-[95vw]"}
+              className={"w-[95vw] bg-white"}
               onChange={(e) => {
                 setTitle(e.target.value);
               }}
@@ -106,14 +155,14 @@ const CreatePost = () => {
               type={"summary"}
               placeholder={"Enter the summary of blog"}
               value={summary}
-              className={"md:w-[80vw] bg-white w-[95vw]"}
+              className={"w-[95vw] bg-white"}
               onChange={(e) => {
                 setSummary(e.target.value);
               }}
             />
             <Input
               type={"url"}
-              className={"md:w-[80vw] bg-white w-[95vw]"}
+              className={"w-[95vw] bg-white"}
               placeholder="Enter the url of the Image, please add only those url which has an extension like jpg, png and jpeg"
               value={image}
               onChange={(e) => {
@@ -121,14 +170,9 @@ const CreatePost = () => {
               }}
             />
           </div>
-          {/* <input
-            type="file"
-            onChange={(e) => {
-              setFiles(e.target.files);
-            }}
-          /> */}
-          <div className="flex justify-center items-center p-3">
-            <div className="  bg-white rounded overflow-hidden shadow-lg">
+
+          <div className="flex justify-center items-center ">
+            <div className=" w-fit bg-white rounded overflow-hidden shadow-lg">
               <ReactQuill
                 value={content}
                 modules={modules}
@@ -136,13 +180,13 @@ const CreatePost = () => {
                 onChange={(value) => {
                   setContent(value);
                 }}
-                className="min-h-[80vh] w-[95vw] h-auto border-white no-underline"
+                className="min-h-screen  w-[95vw]  border-white no-underline"
               />
             </div>
           </div>
           <div className="pt-3">
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-fit">
-              {!loading? 'Post Article' : <Spinner/>}
+              {!loading ? "Update Post" : <Spinner />}
             </button>
           </div>
         </form>
@@ -151,4 +195,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default EditPost;

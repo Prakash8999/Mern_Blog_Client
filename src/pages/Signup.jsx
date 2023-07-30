@@ -22,8 +22,8 @@ const Signup = () => {
       data: { username, email, password },
     })
       .then((res) => {
-        console.log(res);
-        alert(res?.data);
+        
+        
         toast.success("SignUp Successfully, Please Login", {
           position: "top-center",
           autoClose: 3000,
@@ -39,13 +39,31 @@ const Signup = () => {
       .catch((e) => {
         // alert(e);
         if (e) {
-          alert(e?.response.data.message);
-          console.log(e?.response.data.message);
-        } else return alert("Server is not responding");
+          toast.error(e?.message, {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: false,
+            theme: "light",
+          });
+
+        } else return toast.error("Server Not Responding", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: false,
+          progress: false,
+          theme: "light",
+        }); ;
         setRedirect(false);
       });
 
-    console.log(username, email, password);
+    
   };
 
   if (redirect) {

@@ -6,6 +6,8 @@ import { server } from "..";
 import { format, formatISO9075 } from "date-fns";
 import extractToken from "../utils/GetToken";
 import Navbar from "../components/Navbar";
+import TextToSpeech from "../components/TextToSpeech";
+import { ToastContainer, toast } from "react-toastify";
 
 const ViewFull = () => {
   const { id } = useParams();
@@ -13,14 +15,30 @@ const ViewFull = () => {
   const [data, setData] = useState("");
 
   useEffect(() => {
-    if (id && extractToken())
+    try {
+      if (id && extractToken())
       axios(`${server}/readpost/${id}`, {
         method: "GET",
       }).then((res) => {
         setData(res.data);
-        console.log(res.data);
+
       });
+    } catch (err) {
+      toast.error(err?.message, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: false,
+        theme: "light",
+      });
+    }
+
   }, [id]);
+
+  // const content  ={ dangerouslySetInnerHTML={{ __html: data?.content }}}
   return (
     <>
       <div className="">
@@ -59,9 +77,11 @@ const ViewFull = () => {
           </div>
 
           <div className="pt-10 pb-4 flex justify-center">
-            <p className="font-semibold">Thanks for reading!</p>
+            <TextToSpeech text={data?.content} />
+            
           </div>
         </div>
+        <ToastContainer/>
       </div>
     </>
   );

@@ -24,7 +24,7 @@ const Dataprovider = ({children}) => {
 		
 		if (extractToken()) {
 		  setToken(extractToken());
-		  if(location.pathname === "/login"){
+		  if(location.pathname === "/login" || location.pathname==="/"){
 			navigate("/home")
 		  }
 		//   setIsLoggedIn(true);

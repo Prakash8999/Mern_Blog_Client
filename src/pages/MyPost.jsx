@@ -23,11 +23,20 @@ const MyPost = () => {
         },
       })
         .then((res) => {
-          console.log(res);
           setMyPost(res?.data);
         })
         .catch((err) => {
-          console.log(err);
+          toast.error(err?.message, {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: false,
+            theme: "light",
+          });
+
         });
     }
   }, []);
@@ -46,8 +55,7 @@ const MyPost = () => {
             },
           })
           .then((res) => {
-            console.log(_id);
-            console.log(res);
+            
             setDeleteMyPost(res.data);
             toast.success("Blog Deleted Successfully", {
               position: "top-center",
@@ -59,9 +67,19 @@ const MyPost = () => {
               progress: false,
               theme: "light",
             });
+            window.location.reload();
           })
           .catch((err) => {
-            console.log(err);
+            toast.error(err?.message, {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: false,
+              draggable: false,
+              progress: false,
+              theme: "light",
+            });
           });
       }
     } catch (error) {
@@ -116,59 +134,27 @@ const MyPost = () => {
                     id={value?._id}
                     author={value?.userId}
                     onClick={
-                      <button className="px-3 py-2 bg-gray-200 hover:bg-red-500 flex items-center gap-x-2 hover:text-white duration-200 rounded-md text-sm "
+                      <button
+                        className="px-3 py-2 bg-gray-200 hover:bg-red-500 flex items-center gap-x-2 hover:text-white duration-200 rounded-md text-sm "
                         onClick={() => {
                           deletePost(value?._id);
                         }}
                       >
- Delete Post
+                        Delete Post
                       </button>
                     }
                   />
-                  <div className=" hidden ">
-                    <div className="mx-auto md:h-[40vh] h-fit md:w-[45vw] w-[90vw]  bg-white rounded overflow-hidden shadow-lg flex">
-                      <img
-                        className="w-[35%] h-[90%] p-2 rounded-md hidden md:block pt-6 object-cover"
-                        src={value?.image}
-                        alt="Blog post"
-                      />
-                      <div className="flex flex-col justify-between px-6 py-4">
-                        <div className="flex flex-col gap-y-2 ">
-                          <div className="font-bold text-xl mb-2 mx-auto ">
-                            "{value?.title}"
-                          </div>
-                          {/* <p className="text-gray-700 text-base">{summary}</p> */}
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: value?.content.substring(0, 200) + "...",
-                            }}
-                          />
-                        </div>
-                        <div className="flex justify-center w-full gap-x-3 mt-4 ">
-                          <span className="inline-block bg-gray-200 rounded-lg gap-x-2 px-3 py-1  font-light text-gray-700 ">
-                            Posted by {value?.userId.username}
-                          </span>
-                          <Link
-                            to={`/home/${value?._id}`}
-                            className="inline-flex  px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                          >
-                            Read more
-                          </Link>
-
-                          <button
-                            onClick={() => {
-                              deletePost(value?._id);
-                            }}
-                          >
-                            <AiTwotoneDelete />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               );
             })}
+
+          {myPost?.length == 0 && (
+            <div className="w-full h-[100%]">
+              <div className="flex justify-center items-center text-2xl font-semibold">
+                No Data Available
+              </div>
+            </div>
+          )}
         </div>
         <div className="flex justify-center items-center ">
           <button

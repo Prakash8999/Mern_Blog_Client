@@ -6,11 +6,13 @@ import { server } from "..";
 import { Transition } from "@headlessui/react";
 import logo from "../assets/logo.jpeg";
 import extractToken from "../utils/GetToken";
+import LogoutModal from "../modal/LogoutModal";
 const Navbar = () => {
   const { account, setAccount } = UserAuth();
   const naviGate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const loaction = useLocation()
+  const loaction = useLocation();
+  const [modal, setModal] = useState({ show: false });
   // const [username, setUsername] = useState(null);
 
   // useEffect(() => {
@@ -64,6 +66,7 @@ const Navbar = () => {
   ];
   return (
     <>
+      {modal.show && <LogoutModal data={modal.show} setModel={setModal} />}
       <nav className="bg-white bg-opacity-60 drop-shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -80,7 +83,7 @@ const Navbar = () => {
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
                 {extractToken() && (
-                  <div className="flex gap-x-14">
+                  <div className="flex gap-x-14 items-center">
                     {routes?.map((obj, index) => {
                       return (
                         <Link
@@ -88,8 +91,8 @@ const Navbar = () => {
                           key={index}
                           className={
                             obj.route === loaction.pathname
-                              ? "flex flex-col items-center pt-1 text-blue-800 text-sm font-semibold rounded-lg ${className}"
-                              : "flex flex-col items-center pt-1 text-sm "
+                              ? "flex flex-col items-center pt-1 text-blue-800  font-semibold rounded-lg ${className}"
+                              : "flex flex-col items-center pt-1  "
                           }
                         >
                           {obj.lable}
@@ -98,7 +101,9 @@ const Navbar = () => {
                     })}
 
                     <button
-                      onClick={handlelogout}
+                      onClick={()=>{
+                        setModal({show:true})
+                      }}
                       className="text-red-600 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-300 ease-in-out"
                     >
                       {" "}

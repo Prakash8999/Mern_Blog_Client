@@ -6,7 +6,7 @@ import App from './App';
 
 
 
-export const server = 'http://localhost:5000'
+export const server = 'https://mern-write-backend.vercel.app'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

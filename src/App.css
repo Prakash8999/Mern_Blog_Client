@@ -25,3 +25,14 @@
   z-index: 5;
   backdrop-filter: blur(100px);
 }
+
+.ql-blank{
+  border: none !important;
+}
+
+.ql-container.ql-snow{
+  border: none !important;
+}
+.ql-container{
+  height: 80vh !important;
+}
